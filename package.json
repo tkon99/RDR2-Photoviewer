@@ -1,0 +1,27 @@
+{
+  "name": "rdr2-photo-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "alertifyjs": "^1.12.0",
+    "buffertrim": "^1.0.0",
+    "custom-electron-titlebar": "^3.1.0",
+    "electron-store": "^5.1.0",
+    "electron-titlebar": "0.0.3",
+    "electron-titlebar-windows": "^3.0.0",
+    "handlebars": "^4.5.1",
+    "image-to-base64": "^2.0.1",
+    "jquery": "^3.4.1",
+    "jquery.cookie": "^1.4.1"
+  },
+  "devDependencies": {
+    "electron": "^8.0.0-beta.2"
+  }
+}

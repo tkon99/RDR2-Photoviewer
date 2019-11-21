@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>RDR2 Photo Mode Viewer</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="icofont/icofont.min.css">
+
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+  <link rel="stylesheet" href="css/monokai-sublime.css">
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script src="leaflet.awesome-markers.min.js"></script>
+  <link rel="stylesheet" href="css/leaflet.awesome-markers.css" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/alertify.min.css"/>
+  <!-- Default theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.12.0/build/css/themes/default.min.css"/>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <script src="app.js"></script>
+
+</head>
+<body>
+  <span id="error"></span>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="row" id="header">
+    <img src="https://s.rsg.sc/sc/images/react/games/rdr2/logo.png" style="display: inline;" onclick="backToGallery()">
+    <h1 class="white" style="display: inline;">Photo Mode Viewer</h1>
+  </div>
+
+  <div class="container header-margin" id="gallery">
+  </div>
+
+  <div class="container header-margin" id="bigPicture" style="display: none;">
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+<!-- Templates
+-->
+<script id="gallery-template" type="text/x-handlebars-template">
+  {{#each rows}}
+    <div class="row">
+      {{#each this}}
+        <div class="four columns image-wrapper" data-uid="{{this.metadata.uid}}" onclick="handleGalleryClick(this)">
+          <img src="data:jpeg;base64,{{this.image}}" class="u-max-full-width image-item">
+          <div class="image-desc">
+              <h1 style="display: inline; color: white">{{this.metadata.title}}</h1>
+              <p style="display: inline; color: white; text-align: right;" class="u-pull-right">{{this.metadata.time.day}} {{monthString this.metadata.time.month}} {{this.metadata.time.year}}<br>{{leadzero this.metadata.time.hour}}:{{trailzero this.metadata.time.minute}}</p>
+              {{#with this.metadata.meta.horse}}<p><img src="images/horse.svg" class="icon">
+                {{#each this}}
+                  <i style="color: white">{{hash this}}</i>
+                {{/each}}</p>{{/with}}
+              {{#with this.metadata.meta.anml}}<p><img src="images/paw.svg" class="icon">
+                {{#each this}}
+                  <i style="color: white">{{hash this}}</i>
+                {{/each}}
+              </p>{{/with}}
+            </div>
+        </div>
+      {{/each}}
+    </div>
+  {{/each}}
+</script>
+<script id="bigpic-template" type="text/x-handlebars-template">
+  <div class="row">
+    <div class="four columns">
+      <h1 class="no-pad no-mar">{{pic.metadata.title}}</h1>
+      <b class="rdrfont">{{pic.metadata.time.day}} {{monthString pic.metadata.time.month}} {{pic.metadata.time.year}} at {{leadzero pic.metadata.time.hour}}:{{trailzero pic.metadata.time.minute}}</i>
+      <p>
+        <table>
+          {{#with pic.metadata.statename}}<tr>
+            <td></td>
+            <td><i>State:</i></td>
+            <td>{{hash this}}</td>
+          </tr>{{/with}}
+          {{#with pic.metadata.districtname}}<tr>
+            <td></td>
+            <td><i>District:</i></td>
+            <td>{{hash this}}</td>
+          </tr>{{/with}}
+          {{#with pic.metadata.regionname}}{{#if this}}<tr>
+            <td></td>
+            <td><i>Region:</i></td>
+            <td>{{hash this}}</td>
+          </tr>{{/if}}{{/with}}
+          {{#with pic.metadata.meta.horse}}<tr>
+            <td><img src="images/horse.svg" class="icon"></td>
+            <td><i>Horse:</i></td>
+            <td>{{breakHash this}}</td>
+          </tr>{{/with}}
+          {{#with pic.metadata.meta.anml}}<tr>
+            <td><img src="images/paw.svg" class="icon"></td>
+            <td><i>Animals:</i></td>
+            <td>{{breakHash this}}</td>
+          </tr>{{/with}}
+        </table>
+        <a class="button rdrbtn" href="#" onclick="backToGallery()">Back to gallery</a>
+      </p>
+      </div>
+    <div class="eight columns">
+      <img src="data:jpeg;base64,{{pic.image}}" id="bigPictureImg" class="u-max-full-width" onclick="fullscreenImg(this)"><br>
+      <div class="row">
+          <div class="four columns">
+            <a class="button rdrbtn" href="#" style="width: 100%;" onclick="saveImg(this)" data-uid="{{pic.metadata.uid}}"><i class="icofont-download"></i> Save</a>
+          </div>
+          <div class="four columns">
+              <a class="button rdrbtn" href="#" style="width: 100%" onclick="copyImg(this)" data-uid="{{pic.metadata.uid}}"><i class="icofont-copy-invert"></i> Copy to clipboard</a>
+          </div>
+          <div class="four columns">
+              <a class="button rdrbtn" href="#" style="width: 100%" onclick="alert('Not working yet')"><i class="icofont-upload-alt"></i> Upload to Somewhere</a>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="four columns">
+        <pre class="code-height no-mar no-pad">
+            <code class="json no-mar">{{stringify pic.metadata}}</code>
+        </pre>
+        <div style="width: 100%; text-align: center;">
+          <a href="#" onclick="$('.code-height').toggleClass('code-full');" style="color: white;">Expand</a>
+        </div>
+      </div>
+      <div class="eight columns">
+        <div id="map"></div>
+      </div>
+    </div>
+</script>
+</body>
+</html>

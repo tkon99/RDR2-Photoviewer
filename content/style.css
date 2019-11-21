@@ -1,0 +1,159 @@
+@font-face {
+    font-family: Hapna;
+    src: url(./fonts/hapna.woff2) format("woff2"),
+    url(./fonts/hapna.woff) format("woff"),
+    url(./fonts/hapna.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    text-rendering:optimizeLegibility
+}
+
+html { 
+    background: url('https://s.rsg.sc/sc/images/games/RDR2/bg.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.white {
+    color: white;
+}
+
+#header {
+    padding: 15px;
+    background: url('images/tile_bg_header.jpg') repeat-x;
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+}
+
+#header img {
+    vertical-align: middle;
+}
+
+#header h1 {
+    padding-left: 15px;
+    font-family: Hapna, serif;
+    color: black;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.header-margin {
+    margin-top: 150px;
+}
+
+.image-wrapper {
+    cursor: pointer;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    margin-bottom: 15px;
+}
+
+.image-desc {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.image-desc p {
+    margin: 0px;
+}
+
+.icon {
+    height: 1em;
+    width: 1em;
+    fill: #fff;
+}
+
+.icon path {
+    fill: #fff;
+}
+
+#bigPicture {
+    color: white !important;
+}
+
+#bigPictureImg {
+    cursor: zoom-in;
+}
+
+h1 {
+    font-family: Hapna, serif;
+    font-size: 28px
+}
+
+.rdrfont {
+    font-family: Hapna, serif;
+}
+
+.rdrbtn {
+    background: url('images/tile_bg_header.jpg') repeat-x;
+    color: black !important;
+    font-size: 0.8em;
+    font-weight: bolder;
+}
+
+.zoom-out {
+    cursor: zoom-out !important;
+}
+
+.no-pad {
+    padding: 0px;
+}
+
+.no-mar {
+    margin: 0px;
+}
+
+h2 {
+    margin: 0 0 5px;
+    text-align: center;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: gray;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: red;
+}
+
+::selection {
+    color: black !important;
+    background: red;
+  }
+
+.code-height {
+    max-height: 200px;
+    transition-property: all;
+    transition-duration: 1s;
+}
+
+.code-full {
+    max-height: none !important;
+}
+
+/* Map specific styles */
+#map {
+    background: #d2b790;
+    width: 90%;
+    min-height: 300px;
+}
+
+.color-Dark {
+    background: #3d3d3d !important;
+}
